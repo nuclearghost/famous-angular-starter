@@ -1,19 +1,37 @@
 'use strict';
 
 angular.module('famousAngularStarter')
-  .controller('MainCtrl', function ($scope, $famous) {
-    var Transitionable = $famous['famous/transitions/Transitionable'];
-    var Timer = $famous['famous/utilities/Timer'];
+.controller('MainCtrl', ['$scope', '$famous', 'MapsService', 'WeatherService', 
+  function ($scope, $famous, MapsService, WeatherService) {
 
-    $scope.spinner = {
-      speed: 55
+    //var Transitionable = $famous['famous/transitions/Transitionable'];
+    //var Timer = $famous['famous/utilities/Timer'];
+
+    $scope.input = {
+      name: 'San Francisco'
     };
-    $scope.rotateY = new Transitionable(0);
 
-    //run function on every tick of the Famo.us engine
-    Timer.every(function(){
-      var adjustedSpeed = parseFloat($scope.spinner.speed) / 1200;
-      $scope.rotateY.set($scope.rotateY.get() + adjustedSpeed);
-    }, 1);
+    $scope.cities = [];
 
-  });
+    $scope.addCity = function() {
+      $scope.cities.push($scope.input.name);
+      MapsService.geocode($scope.input.name, $scope.handleGeocode);
+      $scope.input.name = '';
+    };
+
+    $scope.handleGeocode = function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        if (results.length > 1){
+          alert('ambiguous results');
+        }
+        var loc = results[0].geometry.location;
+        console.log(results[0].geometry.location);
+        WeatherService.getWeather(loc.k, loc.A, function(data){
+          console.log(data);
+        })
+      } else {
+        alert('Geocode was not successful for the following reason: ' + status);
+      }
+    };
+
+  }]);

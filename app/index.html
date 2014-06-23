@@ -31,6 +31,8 @@
     <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/requirejs/require.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDzOJqZD55aEnnWedzJMYbXrdm3GHByRcY"></script>
+
     <script>
       //set requirejs's base to where the famous lib folder lives
       require.config({baseUrl: 'bower_components'});
@@ -40,6 +42,8 @@
 
     <!-- build:js({app,.tmp}) scripts/main.js -->
     <script src="scripts/famousAngularStarter.js"></script>
+    <script src="scripts/services/mapsService.js"></script>
+    <script src="scripts/services/weatherService.js"></script>
     <script src="scripts/main/main-ctrl.js"></script>
     <!-- inject:partials -->
     <!-- endinject -->
